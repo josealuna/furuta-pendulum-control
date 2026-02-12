@@ -16,4 +16,4 @@ To run a basic simulation, follow these steps in the Julia REPL:
    Pkg.instantiate()
 
    include("src/main.jl")
-# This loads the pendulum model and executes the control loop
+
