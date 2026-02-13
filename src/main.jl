@@ -3,13 +3,7 @@ using MeshCat
 using MeshCatMechanisms
 
 
-using RigidBodyDynamics
-using MeshCat
-using MeshCatMechanisms
 
-using RigidBodyDynamics
-using MeshCat
-using MeshCatMechanisms
 
 function simular_movimiento_base()
     # 1. Cargar el modelo
