@@ -14,6 +14,7 @@
     <child link="arm_link"/>
     <axis xyz="0 0 1"/>
     <origin xyz="0 0 0.05"/>
+    <dynamics damping="0.2" friction="0.05"/>
   </joint>
 
   <link name="arm_link">
@@ -35,7 +36,9 @@
     <parent link="arm_link"/>
     <child link="pendulum_link"/>
     <origin xyz="0.2 0 0"/>
-    <axis xyz="1 0 0"/> </joint>
+    <axis xyz="1 0 0"/>
+    <dynamics damping="0.01" friction="0.005"/>
+  </joint>
 
   <link name="pendulum_link">
     <visual>

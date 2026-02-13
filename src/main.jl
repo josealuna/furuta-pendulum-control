@@ -15,16 +15,18 @@ function simular_movimiento_base()
     # 2. Definir la función de control (Torque)
     # Esta función se llama en cada paso de la simulación
     function control!(τ, t, state)
-        # τ es el vector de torques que vamos a llenar
-        # state.q[1] es la posición del brazo, state.v[1] su velocidad
-        
-        # Vamos a aplicar un torque senoidal al brazo (articulación 1)
-        # para que oscile de un lado a otro
-        τ[1] = 0.1 * sin(2π * 1 * t)  # Amplitud 0.5, Frecuencia 0.5Hz
-        
-        # El péndulo (articulación 2) está libre, torque 0
-        τ[2] = 0.0 
-    end
+    q = configuration(state)
+    v = velocity(state)
+
+    # Parámetros
+    frecuencia = 0.5
+    amplitud_torque = 2.0  # Aumentamos el torque
+    friccion = 0.2        # Ayuda a que el brazo se detenga y cambie de sentido
+
+    # τ[1] = Oscilación - (Fricción * Velocidad)
+    τ[1] = amplitud_torque * sin(2π * frecuencia * t) - friccion*v[1]
+    τ[2] = 0.0 # Péndulo libre
+end
 
     # 3. Estado inicial
     # El brazo en 0 y el péndulo colgando hacia abajo (cerca de π)
@@ -107,8 +109,28 @@ function main()
     return mvis
 end
 
+
+function cube_sat()
+
+     # 1. Cargar modelo
+    urdf_path = joinpath(@__DIR__, "..", "models", "Cube_Sat.urdf")
+    mechanism = parse_urdf(urdf_path)
+    state = MechanismState(mechanism)
+    
+    println(urdf_path)
+    println("✅ Modelo cargado correctamente")
+
+    # 2. Configurar el Visualizador
+    #vis = Visualizer() # Esto crea el servidor de MeshCat
+    #mcv = MechanismVisualizer(mechanism, URDFVisuals(urdf_path), vis)
+
+    mvis = MechanismVisualizer(mechanism, URDFVisuals(urdf_path));
+
+    mvis
+
+end
 # Ejecutar
-mvis = simular_movimiento_base()
+mvis = cube_sat()
 render(mvis)
 
 render(mvis) # Emsto abre o actualiza la pestaña
